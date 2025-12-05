@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/Source/">
+    <Project Path="Source/CapitalGains.Cli.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/CapitalGains.Cli.Integration.Tests/CapitalGains.Cli.Integration.Tests.csproj" Id="ae35e3b2-f876-4e64-9b5b-e18ce8312780" />
+    <Project Path="Tests/CapitalGains.Cli.Unit.Tests/CapitalGains.Cli.Unit.Tests.csproj" Id="05fb9aba-51e4-42dd-ac9b-46cf37b00121" />
+  </Folder>
+</Solution>
