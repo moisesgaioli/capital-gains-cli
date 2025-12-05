@@ -191,7 +191,7 @@ O projeto é composto por testes de unidade e de integração, para garantir a f
 Para executar via docker recomenda-se instalar o projeto em uma máquina virtual com .NET SDK instalado, para isso, precisa-se passar o caminho onde está o projeto, de acordo com o comando:
 
 ```bash
-docker run -it --rm -v seu-caminho-aqui\CapitalGains:/src mcr.microsoft.com/dotnet/sdk:10.0 bash
+docker run -it --rm -v seu-caminho-aqui\capital-gains-cli:/src mcr.microsoft.com/dotnet/sdk:10.0 bash
 ```
 
 Basta abrir a pasta:
