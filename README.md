@@ -10,8 +10,7 @@ O programa vai lidar com dois tipos de operações ( buy e sell ) e ele vai segu
 * Para determinar se a operação resultou em lucro ou prejuízo, vai ser calculado o preço médio ponderado, então quando a operação for de compra, o preço médio ponderado será recalculado através da fórmula:
   
 ```bash
-nova-media-ponderada = ((quantidade-de-acoes-atual * media-ponderadaatual) + (quantidade-de-acoes-compradas * valor-de-compra)) / (quantidade-de-acoes-atual +
-quantidade-de-acoes-compradas)
+nova-media-ponderada = ((quantidade-de-acoes-atual * media-ponderadaatual) + (quantidade-de-acoes-compradas * valor-de-compra)) / (quantidade-de-acoes-atual + quantidade-de-acoes-compradas)
 ```
 
 Por exemplo, se você comprou 10 ações por R$ 20,00, vendeu 5, depois comprou outras 5 por R$ 10,00, a média ponderada é ((5 x 20.00) + (5 x 10.00)) / (5 + 5) = 15.00.
