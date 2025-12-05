@@ -22,6 +22,10 @@ namespace CapitalGains.Cli
         private static string? JsonProcess(string input)
         {
             List<OperationDto>? operations = JsonSerializer.Deserialize<List<OperationDto>>(input);
+
+            if (operations is null)
+                return string.Empty;
+
             List<TaxDto> result = new CapitalGainsService().Process(operations);
             return JsonSerializer.Serialize(result);
         }

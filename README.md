@@ -1,186 +1,207 @@
-﻿# Capital Gains CLI
+﻿
+# Capital Gains CLI
 
-> CLI para cálculo de imposto sobre ganho de capital em operações de compra e venda de ações. Implementação do desafio técnico no padrão exigido pelo enunciado.
+O projeto tem como objetivo o cálculo de imposto a ser pago sobre lucros ou prejuízos de operações no mercado financeiro de ações.
 
----
 
-## ✅ Requisitos
 
-* .NET 8 SDK ou superior
-* Sistema operacional: Windows, Linux ou macOS
 
----
 
-## ▶️ Como Executar
+## Stacks utilizadas
 
-```bash
-dotnet run --project CapitalGains.Cli
-```
-
-Cole a entrada no formato JSON pela entrada padrão (`stdin`):
-
-```json
-[{"operation":"buy","unit-cost":10,"quantity":100},{"operation":"sell","unit-cost":15,"quantity":50}]
-```
-
-Saída esperada (`stdout`):
-
-```json
-[{"tax":0.0},{"tax":0.0}]
-```
-
-O programa aceita múltiplas linhas de entrada consecutivas.
-
----
-
-## 🧠 Regras de Negócio Implementadas
-
-* Compras nunca geram imposto
-* Imposto de 20% sobre o lucro
-* Isenção para operações cujo valor total seja menor ou igual a R$20.000
-* Prejuízos são acumulados para abatimento futuro
-* Média ponderada recalculada a cada compra
-* Prejuízos são descontados antes da tributação
-* Quantidade de ações não pode ficar negativa
-
----
-
-## 🏗️ Arquitetura do Projeto
-
-```
-CapitalGains
-│
-├── CapitalGains.Domain
-│   ├── Entities
-│   └── Services
-│
-├── CapitalGains.Cli
-│   └── Program.cs
-│
-├── CapitalGains.UnitTests
-│
-└── CapitalGains.IntegrationTests
-```
-
-### Camadas
-
-* **Domain**: Contém toda a lógica de negócio isolada
-* **CLI**: Responsável apenas por entrada e saída (STDIN / STDOUT)
-* **UnitTests**: Validação isolada das regras do domínio
-* **IntegrationTests**: Execução real do CLI como caixa-preta
-
----
-
-## 🧪 Testes
-
-### Rodar todos os testes
-
-```bash
-dotnet test
-```
-
-### Tipos de testes
-
-* ✅ Testes unitários (regras isoladas)
-* ✅ Testes de integração (STDIN → STDOUT)
-* ✅ Casos oficiais do enunciado
-
----
-
-## 🧾 Padrões Técnicos
-
-* Clean Architecture
-* SOLID
-* Separação total entre domínio e infraestrutura
-* Sem uso de estado global
-* Totalmente determinístico
-
----
-
-## 📦 Tecnologias Utilizadas
-
-* C#
-* .NET 8
+* .NET 10
 * xUnit
 * FluentAssertions
 * System.Text.Json
+* Docker
+* Docker-compose
 
----
 
-## 👨‍💻 Autor
+## Documentação
+O programa deve receber listas, uma por linha, de operações do mercado financeiro de ações em formato
+JSON através da entrada padrão ( ```stdin```). Com os seguintes campos:
 
-Desenvolvido por Moisés Estevão como parte de processo seletivo para vaga de Engenheiro de Software.
+| Nome | Significado |
+| --- | --- |
+| operation | Se a operação é uma operação de compra ( buy ) ou venda ( sell )|
+| unit-cost |  Preço unitário da ação em uma moeda com duas casas decimais |
+| quantity | Quantidade de ações negociadas |
 
----
-
-## 🐳 Execução com Docker (Build Conteinerizada)
-
-### Build da imagem
-
-```bash
-docker build -t capital-gains-cli .
-```
-
-### Execução interativa
+Exemplo de entrada:
 
 ```bash
-docker run -it capital-gains-cli
+[{"operation":"buy", "unit-cost":10.00, "quantity": 10000},{"operation":"sell", "unit-cost":20.00, "quantity": 5000}]
+[{"operation":"buy", "unit-cost":20.00, "quantity": 10000},{"operation":"sell", "unit-cost":10.00, "quantity": 5000}]
 ```
 
-### Execução via pipe (STDIN)
+Para cada linha da entrada, o programa vai retornar uma lista contendo o imposto pago para cada
+operação recebida. Os elementos desta lista vão estar codificados em formato JSON e a saída vai ser
+retornada através da saída padrão ( ```stdout```). Com o seguinte campo:
+
+| Nome | Significado |
+| --- | --- |
+| tax | O valor do imposto pago em uma operação|
+
+Exemplo de saída:
 
 ```bash
-echo '[{"operation":"buy","unit-cost":10,"quantity":100},{"operation":"sell","unit-cost":15,"quantity":50}]' | docker run -i capital-gains-cli
+[{"tax": 0.0}, {"tax": 10000.0}]
+[{"tax": 0.0}, {"tax": 0.0}]
 ```
 
----
+## Executando o projeto
 
-## 🇬🇧 English Version
+Será apresentada duas formas de executar o projeto, via Docker ou via .NET SDK. Segue intruções abaixo:
 
-# Capital Gains CLI
 
-CLI application to calculate capital gains tax from stock buy/sell operations. Technical challenge implementation following the official specifications.
 
-## Requirements
+### Docker
 
-* .NET 8 SDK or higher
+#### Instalando o Docker
 
-## Run
+Acesse a página oficial de instalação do Docker Desktop:
+https://docs.docker.com/get-docker/
+
+Escolha o instalador para o seu sistema operacional (Windows, Linux ou macOS).
+
+Após instalar, confirme que o Docker está funcionando:
 
 ```bash
-dotnet run --project CapitalGains.Cli
+docker --version
 ```
 
-Input (stdin):
-
-```json
-[{"operation":"buy","unit-cost":10,"quantity":100},{"operation":"sell","unit-cost":15,"quantity":50}]
+Resultado esperado:
+```bash
+Docker version 'sua-versão'
 ```
 
-Output (stdout):
-
-```json
-[{"tax":0.0},{"tax":0.0}]
-```
-
-## Business Rules
-
-* Buy operations generate no tax
-* 20% tax over profit
-* Tax exemption for operations ≤ 20,000 currency
-* Losses are accumulated
-* Weighted average price is recalculated on buy
-* Losses deductible before taxation
-* Stock quantity cannot be negative
-
-## Tests
+Dentro da pasta raiz do projeto, rode o comando:
 
 ```bash
+docker compose build
+```
+
+Em seguida:
+
+```bash
+docker compose run --rm capital-gains-cli
+```
+
+A aplicação ficará esperando uma ação, cole a seguinte operação:
+
+```bash
+[{"operation":"buy", "unit-cost":10.00, "quantity": 10000},{"operation":"sell", "unit-cost":20.00, "quantity": 5000}]
+```
+
+Retorno esperado:
+
+```bash
+[{"tax": 0.0}, {"tax": 10000.0}]
+```
+
+A aplicação ficará esperando uma linha vazia para finalizar, portanto, pressione ```ENTER```. Ou envie outras operações para continuar.
+
+Dentro do projeto existe um arquivo de texto, onde também pode ser executado, basta rodar o comando:
+
+```bash
+docker run --rm -i capital-gains-cli < Source/Input/input.txt
+```
+
+
+### .NET SDK
+#### Instalando o .NET 10.0
+
+Acesse a página oficial de downloads do .NET:
+
+https://dotnet.microsoft.com/download
+
+Baixe o instalador do .NET SDK 10, ou superior, correspondente ao seu sistema operacional (Windows, Linux ou macOS).
+
+Após instalar, confirme a instalação executando no terminal:
+
+```bash
+dotnet --version
+```
+
+Resultado esperado:
+```bash
+10.0.100
+```
+
+Dentro da pasta raiz do projeto, abra a seguinte pasta:
+
+```bash
+cd Source
+```
+
+Em seguida:
+
+```bash
+dotnet restore
+dotnet build
+```
+
+Em caso de sucesso, excute:
+
+```bash
+dotnet run
+```
+
+A aplicação ficará esperando uma ação, cole a seguinte operação:
+
+```bash
+[{"operation":"buy", "unit-cost":10.00, "quantity": 10000},{"operation":"sell", "unit-cost":20.00, "quantity": 5000}]
+```
+
+Retorno esperado:
+
+```bash
+[{"tax": 0.0}, {"tax": 10000.0}]
+```
+
+A aplicação ficará esperando uma linha vazia para finalizar, portanto, pressione ```ENTER```. Ou envie outras operações para continuar.
+
+Dentro do projeto existe um arquivo de texto, onde também pode ser executado, basta rodar o comando:
+
+```bash
+dotnet run < Input/input.txt
+```
+## Rodando os testes
+
+O projeto é composto por testes de unidade e de integração, para garantir a funcionalidade desejada. Para executar os testes, também será apresentada das duas formas anteriores.
+
+### Docker
+
+Para executar via docker recomenda-se instalar o projeto em uma máquina virtual com .NET SDK instalado, para isso, precisa-se passar o caminho onde está o projeto, de acordo com o comando:
+
+```bash
+docker run -it --rm -v seu-caminho-aqui\CapitalGains:/src mcr.microsoft.com/dotnet/sdk:10.0 bash
+```
+
+Basta abrir a pasta:
+
+```bash
+cd src
+```
+
+A seguir executar mais dois comandos:
+
+```bash
+dotnet restore
 dotnet test
 ```
 
-Includes full unit and integration test coverage.
+### .NET SDK
 
----
+Dentro da pasta raiz do projeto, abra a seguinte pasta:
 
-✅ Fully compliant with the official challenge specification.
+```bash
+cd Source
+```
+
+Em seguida executar os dois comandos:
+
+```bash
+dotnet restore
+dotnet test
+```

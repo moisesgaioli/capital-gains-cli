@@ -1,0 +1,9 @@
+services:
+  capital-gains-cli:
+    image: capital-gains-cli
+    container_name: capital-gains-cli
+    build:
+      context: .
+      dockerfile: Dockerfile
+    stdin_open: true
+    tty: true
