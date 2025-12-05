@@ -3,9 +3,26 @@
 
 O projeto tem como objetivo o cálculo de imposto a ser pago sobre lucros ou prejuízos de operações no mercado financeiro de ações.
 
+## Regra de negócio
 
+O programa vai lidar com dois tipos de operações ( buy e sell ) e ele vai seguir as seguintes regras:
+* O percentual de imposto pago é de 20% sobre o lucro obtido na operação. Ou seja, o imposto vai ser pago quando há uma operação de venda cujo preço é superior ao preço médio ponderado de compra.
+* Para determinar se a operação resultou em lucro ou prejuízo, vai ser calculado o preço médio ponderado, então quando a operação for de compra, o preço médio ponderado será recalculado através da fórmula:
+  
+```bash
+nova-media-ponderada = ((quantidade-de-acoes-atual * media-ponderadaatual) + (quantidade-de-acoes-compradas * valor-de-compra)) / (quantidade-de-acoes-atual +
+quantidade-de-acoes-compradas)
+```
 
+Por exemplo, se você comprou 10 ações por R$ 20,00, vendeu 5, depois comprou outras 5 por R$ 10,00, a média ponderada é ((5 x 20.00) + (5 x 10.00)) / (5 + 5) = 15.00.
 
+* O prejuízo é deduzido dos múltiplos lucros futuros, até que todo prejuízo seja deduzido.
+
+* Prejuízos acontecem quando você vende ações a um valor menor do que o preço médio ponderado de compra. Neste caso, nenhum imposto vai ser pago e vai ser subtraído do prejuízo dos lucros seguintes, antes de calcular o imposto.
+
+* Não será pago nenhum imposto e não será deduzido o lucro obtido dos prejuízos acumulados se o valor total da operação (custo unitário da ação x quantidade) for menor ou igual a R$ 20000,00. 
+
+* Nenhum imposto é pago em operações de compra.
 
 ## Stacks utilizadas
 
